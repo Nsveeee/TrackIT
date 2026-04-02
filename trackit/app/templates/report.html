@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Report Issue · TrackIT{% endblock %}
+{% block body %}
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <span>TrackIT</span>
+      </div>
+
+      <nav class="nav" aria-label="Primary">
+        <a href="/"><span>Dashboard</span></a>
+        <a class="active" href="/report/"><span>Report Bug</span></a>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="sidebar-toggle" type="button" onclick="toggleSidebar()" aria-label="Toggle navigation">
+            <span></span>
+          </button>
+          <div class="panel-title">Report a new issue</div>
+        </div>
+        <a class="pill" href="/">Back to dashboard</a>
+      </header>
+
+      <div class="form-page">
+        <div class="panel form-card">
+          <div class="panel-head">
+            <div class="panel-title">Issue details</div>
+            <span class="pill">Required fields *</span>
+          </div>
+
+          <div style="padding:16px">
+            <form method="POST">
+              {% csrf_token %}
+
+              <div class="grid-2">
+                <div class="field" style="margin:0">
+                  <div class="label">Title *</div>
+                  <div class="control">
+                    <input name="title" placeholder="Short summary" required>
+                  </div>
+                </div>
+
+                <div class="field" style="margin:0">
+                  <div class="label">Project *</div>
+                  <select class="select" name="project" required style="width:100%;padding:12px 14px;border-radius:14px">
+                    {% for p in projects %}
+                      <option value="{{ p.id }}">{{ p.name }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="label">Description *</div>
+                <textarea class="textarea" name="description" placeholder="Steps to reproduce, expected vs actual, screenshots links..." required></textarea>
+              </div>
+
+              <div class="field">
+                <div class="label">Priority *</div>
+                <select class="select" name="priority" required style="padding:12px 14px;border-radius:14px">
+                  <option>LOW</option>
+                  <option>MEDIUM</option>
+                  <option>HIGH</option>
+                </select>
+              </div>
+
+              <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap">
+                <a class="btn-ghost" href="/" style="display:inline-flex;align-items:center">Cancel</a>
+                <button class="btn-sm" type="submit">Submit</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const s = document.getElementById('sidebar');
+      if (!s) return;
+      s.classList.toggle('is-open');
+      document.body.classList.toggle('with-sidebar', s.classList.contains('is-open'));
+    }
+  </script>
+{% endblock %}

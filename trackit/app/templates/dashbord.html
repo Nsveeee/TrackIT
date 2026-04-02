@@ -1,0 +1,28 @@
+<h1>Dashboard</h1>
+
+<a href="/report">Report Bug</a>
+
+{% for bug in bugs %}
+<div>
+    <h3>{{ bug.title }}</h3>
+    <p>Status: {{ bug.status }}</p>
+    <p>Priority: {{ bug.priority }}</p>
+
+    <form method="POST" action="/update/{{ bug.id }}/">
+        {% csrf_token %}
+        <select name="status">
+            <option>OPEN</option>
+            <option>IN_PROGRESS</option>
+            <option>RESOLVED</option>
+            <option>CLOSED</option>
+        </select>
+        <button>Update</button>
+    </form>
+
+    <form method="POST" action="/comment/{{ bug.id }}/">
+        {% csrf_token %}
+        <input name="text" placeholder="Add comment">
+        <button>Comment</button>
+    </form>
+</div>
+{% endfor %}
