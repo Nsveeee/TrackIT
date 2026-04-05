@@ -114,6 +114,7 @@
                       </span>
                     </td>
                     <td style="display:flex;gap:10px;align-items:center">
+                      {% if request.user.role == 'DEV' %}
                       <form class="inline-form" method="POST" action="/update/{{ bug.id }}/">
                         {% csrf_token %}
                         <select class="select" name="status" aria-label="Update status for {{ bug.title }}">
@@ -124,6 +125,7 @@
                         </select>
                         <button class="btn-ghost" type="submit">Update</button>
                       </form>
+                      {% endif %}
 
                       <form class="inline-form" method="POST" action="/comment/{{ bug.id }}/">
                         {% csrf_token %}

@@ -98,6 +98,9 @@ def report_bug(request):
 
 @login_required
 def update_status(request, id):
+    if getattr(request.user, 'role', None) != 'DEV':
+        return HttpResponseForbidden("Only developers can update bug status.")
+
     bug = get_object_or_404(Bug, id=id)
     bug.status = request.POST['status']
     bug.save()
